@@ -1,0 +1,32 @@
+[
+  {
+    "Id": 1,
+    "Name": "الكل",
+    "PictureUrl": "images/collections/c1.png"
+  },
+  {
+    "Id": 2,
+    "Name": "طقم الالماس",
+    "PictureUrl": "images/collections/c2.png"
+  },
+  {
+    "Id": 3,
+    "Name": "طقم الفضة",
+    "PictureUrl": "images/collections/c3.png"
+  },
+  {
+    "Id": 4,
+    "Name": "طقم الذهب",
+    "PictureUrl": "images/collections/c4.png"
+  },
+  {
+    "Id": 5,
+    "Name": "طقم مشكل",
+    "PictureUrl": "images/collections/c5.png"
+  },
+  {
+    "Id": 6,
+    "Name": "طقم برازيلي",
+    "PictureUrl": "images/collections/c6.png"
+  }
+]

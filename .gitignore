@@ -1,0 +1,13 @@
+API/bin/
+.idea/
+.vs/
+*.db
+API/Identity.db-shm
+API/Identity.db-wal
+API/obj/
+Core/bin/
+Core/obj/
+Infrastructure/bin/
+Infrastructure/Data/Migrations/
+Infrastructure/Identity/Migrations/
+Infrastructure/obj/
