@@ -1,4 +1,5 @@
 using API.DTOs;
+using API.Errors;
 using API.Helpers;
 using AutoMapper;
 using Core.Entities;
@@ -31,6 +32,16 @@ public class PostsController : BaseApiController
         return Ok(new Pagination<Post>(postParameters.PageIndex, postParameters.PageSize, totalItems, posts));
     }
 
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<Post>> GetPost(int id)
+    {
+        var spec = new PostWithSpecification(id);
+        var post = await _unitOfWork.Repository<Post>().GetEntityWithSpec(spec);
+
+        if (post is null) 
+            return NotFound(new ApiResponse(404));
+        return post;
+    }
     [HttpPost]
     public async Task<IActionResult> Create(PostRequestDto requestDto)
     {
