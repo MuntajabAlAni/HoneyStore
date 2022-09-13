@@ -35,9 +35,6 @@ public class ProductsController : BaseApiController
 
         var products = await _unitOfWork.Repository<Product>().ListAsyncWithSpec(spec);
 
-        var result = await _unitOfWork.Complete();
-
-        if (result <= 0) return BadRequest();
         var data = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDto>>(products);
 
         return Ok(new Pagination<ProductToReturnDto>(productParameters.PageIndex, productParameters.PageSize,
@@ -60,23 +57,15 @@ public class ProductsController : BaseApiController
     public async Task<ActionResult<IReadOnlyList<ProductCollection>>> GetProductCollections()
     {
         var collections = await _unitOfWork.Repository<ProductCollection>().ListAllAsync();
-        var result = await _unitOfWork.Complete();
 
-        if (result > 0)
-            return Ok(collections);
-
-        return BadRequest();
+        return Ok(collections);
     }
 
     [HttpGet("types")]
     public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypes()
     {
         var types = await _unitOfWork.Repository<ProductType>().ListAllAsync();
-        var result = await _unitOfWork.Complete();
 
-        if (result > 0)
-            return Ok(types);
-
-        return BadRequest();
+        return Ok(types);
     }
 }
