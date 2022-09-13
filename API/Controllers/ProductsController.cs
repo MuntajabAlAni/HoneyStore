@@ -68,4 +68,15 @@ public class ProductsController : BaseApiController
 
         return Ok(types);
     }
+
+    [HttpPost]
+    public async Task<ActionResult<Product>> Create(ProductDto productDto)
+    {
+        var product = _mapper.Map<ProductDto, Product>(productDto);
+        
+        _unitOfWork.Repository<Product>().Add(product);
+        var result = await _unitOfWork.Complete();
+
+        return Ok(result <= 0 ? null : product);
+    }
 }

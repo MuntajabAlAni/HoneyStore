@@ -30,5 +30,6 @@ public class MappingProfiles : Profile
             .ForMember(d => d.PictureUrl, o => o.MapFrom<OrderItemUrlResolver>());
 
         CreateMap<Post, PostRequestDto>().ReverseMap();
+        CreateMap<ProductDto, Product>();
     }
 }
