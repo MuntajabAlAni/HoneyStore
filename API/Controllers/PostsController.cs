@@ -42,6 +42,7 @@ public class PostsController : BaseApiController
             return NotFound(new ApiResponse(404));
         return post;
     }
+    
     [HttpPost]
     public async Task<IActionResult> Create(PostRequestDto requestDto)
     {
