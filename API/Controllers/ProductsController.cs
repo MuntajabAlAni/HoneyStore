@@ -72,11 +72,24 @@ public class ProductsController : BaseApiController
     [HttpPost]
     public async Task<ActionResult<Product>> Create(ProductDto productDto)
     {
-        var product = _mapper.Map<ProductDto, Product>(productDto);
-        
+        var product = _mapper.Map<Product>(productDto);
+
+        product.PictureUrl = await CopyFileToServerAsync(productDto.Image);
+
         _unitOfWork.Repository<Product>().Add(product);
         var result = await _unitOfWork.Complete();
 
         return Ok(result <= 0 ? null : product);
+    }
+
+    private async Task<string> CopyFileToServerAsync(IFormFile image)
+    {
+        var imageFolderName = Path.Combine("Resources", "PostImages");
+        var imageUrl = Guid.NewGuid() + Path.GetExtension(image.FileName);
+        var pathToSaveImage = Path.Combine(imageFolderName, imageUrl);
+
+        await using var streamImage = new FileStream((pathToSaveImage), FileMode.Create);
+        await image.CopyToAsync(streamImage);
+        return imageUrl;
     }
 }

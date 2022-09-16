@@ -47,10 +47,8 @@ public class PostsController : BaseApiController
     public async Task<IActionResult> Create(PostRequestDto requestDto)
     {
         var post = _mapper.Map<Post>(requestDto);
-        if (requestDto.Image is null)
-            post.PictureUrl = "";
-        else
-            post.PictureUrl = await CopyFileToServerAsync(requestDto.Image);
+        post.PictureUrl = await CopyFileToServerAsync(requestDto.Image);
+        
         _unitOfWork.Repository<Post>().Add(post);
         var result = await _unitOfWork.Complete();
          
