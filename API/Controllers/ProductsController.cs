@@ -70,11 +70,10 @@ public class ProductsController : BaseApiController
     }
 
     [HttpPost]
-    public async Task<ActionResult<Product>> Create(ProductDto productDto)
+    public async Task<ActionResult<Product>> Create([FromForm] ProductDto productDto)
     {
         var product = _mapper.Map<Product>(productDto);
-
-        product.PictureUrl = await CopyFileToServerAsync(productDto.Image);
+        await CopyFileToServerAsync(productDto.Images, product);
 
         _unitOfWork.Repository<Product>().Add(product);
         var result = await _unitOfWork.Complete();
@@ -82,14 +81,24 @@ public class ProductsController : BaseApiController
         return Ok(result <= 0 ? null : product);
     }
 
-    private async Task<string> CopyFileToServerAsync(IFormFile image)
+    private async Task CopyFileToServerAsync(List<ProductImagesDto> productImagesDto, Product product)
     {
-        var imageFolderName = Path.Combine("Resources", "PostImages");
-        var imageUrl = Guid.NewGuid() + Path.GetExtension(image.FileName);
-        var pathToSaveImage = Path.Combine(imageFolderName, imageUrl);
+        foreach (var productImage in productImagesDto)
+        {
+            var imageFolderName = Path.Combine("Resources", "ProductImages");
+            var imageUrl = Guid.NewGuid() + Path.GetExtension(productImage.Image.FileName);
 
-        await using var streamImage = new FileStream((pathToSaveImage), FileMode.Create);
-        await image.CopyToAsync(streamImage);
-        return imageUrl;
+            if (productImage.IsMain) product.PictureUrl = imageUrl;
+            
+            var pathToSaveImage = Path.Combine(imageFolderName, imageUrl);
+
+            await using var streamImage = new FileStream((pathToSaveImage), FileMode.Create);
+            await productImage.Image.CopyToAsync(streamImage);
+
+            product.ProductImages.Add(new ProductImages
+            {
+                pictureUrl = imageUrl
+            });
+        }
     }
 }
