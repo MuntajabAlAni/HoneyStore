@@ -81,7 +81,29 @@ public class ProductsController : BaseApiController
         return Ok(result <= 0 ? null : product);
     }
 
-    private async Task CopyFileToServerAsync(List<ProductImagesDto> productImagesDto, Product product)
+    [HttpPut]
+    public async Task<ActionResult<Product>> Update([FromForm] ProductDto productDto)
+    {
+        var product = await _unitOfWork.Repository<Product>().GetByIdAsync(productDto.Id);
+       
+        if (product != null)
+        {
+            product.Name = productDto.Name;
+            product.Description = productDto.Description;
+            product.Price = productDto.Price;
+            product.ProductTypeId = productDto.ProductTypeId;
+            product.ProductCollectionId = productDto.ProductCollectionId;
+        //    product.ProductImages =
+        //    product.PictureUrl =
+        
+            _unitOfWork.Repository<Product>().Update(product);
+        }
+
+        var result = await _unitOfWork.Complete();
+        return Ok(result <= 0 ? null : product);
+    }
+
+    private static async Task CopyFileToServerAsync(List<ProductImagesDto> productImagesDto, Product product)
     {
         foreach (var productImage in productImagesDto)
         {

@@ -55,7 +55,7 @@ public class PostsController : BaseApiController
         return Ok(result <= 0 ? null : post);
     }
 
-    private async Task<string> CopyFileToServerAsync(IFormFile image)
+    private static async Task<string> CopyFileToServerAsync(IFormFile image)
     {
         var imageFolderName = Path.Combine("Resources", "PostImages");
         var imageUrl = Guid.NewGuid() + Path.GetExtension(image.FileName);
