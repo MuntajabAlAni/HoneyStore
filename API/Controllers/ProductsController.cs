@@ -122,7 +122,7 @@ public class ProductsController : BaseApiController
         }
     }
 
-    private async static Task DeleteFileFromServer(IEnumerable<ProductImages> productImages)
+    private static Task DeleteFileFromServer(IEnumerable<ProductImages> productImages)
     {
         foreach (var pathToDeleteImage in from productImage in productImages
                  let imageFolderName = Path.Combine("Resources", "ProductImages")
