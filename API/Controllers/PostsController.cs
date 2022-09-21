@@ -26,7 +26,7 @@ public class PostsController : BaseApiController
     {
         var spec = new PostWithSpecification(postParameters);
         var countSpec = new PostWithFiltersForCountSpecification(postParameters);
-        
+
         var totalItems = await _unitOfWork.Repository<Post>().CountAsync(countSpec);
         var posts = await _unitOfWork.Repository<Post>().ListAsyncWithSpec(spec);
         return Ok(new Pagination<Post>(postParameters.PageIndex, postParameters.PageSize, totalItems, posts));
@@ -38,20 +38,34 @@ public class PostsController : BaseApiController
         var spec = new PostWithSpecification(id);
         var post = await _unitOfWork.Repository<Post>().GetEntityWithSpec(spec);
 
-        if (post is null) 
+        if (post is null)
             return NotFound(new ApiResponse(404));
         return post;
     }
-    
+
     [HttpPost]
-    public async Task<IActionResult> Create(PostRequestDto requestDto)
+    public async Task<IActionResult> Create([FromForm] PostRequestDto requestDto)
+    {
+        var post = _mapper.Map<Post>(requestDto);
+        post.PictureUrl = await CopyFileToServerAsync(requestDto.Image);
+
+        _unitOfWork.Repository<Post>().Add(post);
+        var result = await _unitOfWork.Complete();
+
+        return Ok(result <= 0 ? null : post);
+    }
+    
+    [HttpPut]
+    public async Task<ActionResult<Post>> Update([FromForm] PostRequestDto requestDto)
     {
         var post = _mapper.Map<Post>(requestDto);
         post.PictureUrl = await CopyFileToServerAsync(requestDto.Image);
         
-        _unitOfWork.Repository<Post>().Add(post);
+        await DeleteFileFromServer(post.PictureUrl);
+        
+        _unitOfWork.Repository<Post>().Update(post);
         var result = await _unitOfWork.Complete();
-         
+        
         return Ok(result <= 0 ? null : post);
     }
 
@@ -64,5 +78,13 @@ public class PostsController : BaseApiController
         await using var streamImage = new FileStream((pathToSaveImage), FileMode.Create);
         await image.CopyToAsync(streamImage);
         return imageUrl;
+    }
+
+    private async static Task DeleteFileFromServer(string pictureUrl)
+    {
+        var imageFolderName = Path.Combine("Resources", "ProductImages");
+        var pathToDeleteImage = Path.Combine(imageFolderName, pictureUrl);
+
+        System.IO.File.Delete(pathToDeleteImage);
     }
 }
