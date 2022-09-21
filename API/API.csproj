@@ -7,6 +7,17 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Resources\PostImages\**" />
+      <Compile Remove="Resources\ProductImages\**" />
+      <Content Remove="Resources\PostImages\**" />
+      <Content Remove="Resources\ProductImages\**" />
+      <EmbeddedResource Remove="Resources\PostImages\**" />
+      <EmbeddedResource Remove="Resources\ProductImages\**" />
+      <None Remove="Resources\PostImages\**" />
+      <None Remove="Resources\ProductImages\**" />
+    </ItemGroup>
+
+    <ItemGroup>
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.8" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.8">
@@ -19,7 +30,6 @@
 
     <ItemGroup>
       <Folder Include="obj\Debug\net6.0" />
-      <Folder Include="Resources\PostImages" />
       <Folder Include="wwwroot" />
     </ItemGroup>
 

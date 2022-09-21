@@ -61,7 +61,7 @@ public class PostsController : BaseApiController
         var post = _mapper.Map<Post>(requestDto);
         post.PictureUrl = await CopyFileToServerAsync(requestDto.Image);
         
-        await DeleteFileFromServer(post.PictureUrl);
+         DeleteFileFromServer(post.PictureUrl);
         
         _unitOfWork.Repository<Post>().Update(post);
         var result = await _unitOfWork.Complete();
@@ -72,6 +72,8 @@ public class PostsController : BaseApiController
     private static async Task<string> CopyFileToServerAsync(IFormFile image)
     {
         var imageFolderName = Path.Combine("Resources", "PostImages");
+        if (!Directory.Exists(imageFolderName))
+            Directory.CreateDirectory(imageFolderName);
         var imageUrl = Guid.NewGuid() + Path.GetExtension(image.FileName);
         var pathToSaveImage = Path.Combine(imageFolderName, imageUrl);
 
@@ -80,7 +82,7 @@ public class PostsController : BaseApiController
         return imageUrl;
     }
 
-    private async static Task DeleteFileFromServer(string pictureUrl)
+    private  static void DeleteFileFromServer(string pictureUrl)
     {
         var imageFolderName = Path.Combine("Resources", "ProductImages");
         var pathToDeleteImage = Path.Combine(imageFolderName, pictureUrl);
