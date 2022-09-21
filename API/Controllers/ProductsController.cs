@@ -84,18 +84,14 @@ public class ProductsController : BaseApiController
     [HttpPut]
     public async Task<ActionResult<Product>> Update([FromForm] ProductDto productDto)
     {
-        var product = await _unitOfWork.Repository<Product>().GetByIdAsync(productDto.Id);
         var productImagesSpec = new ProductImagesByProductId(productDto.Id!.Value);
         var productImages = await _unitOfWork.Repository<ProductImages>().ListAsyncWithSpec(productImagesSpec);
 
-        if (product is null)
-            return NotFound(new ApiResponse(404, "Error.. Product not found !"));
-
         productImages.ToList().ForEach(pi => { _unitOfWork.Repository<ProductImages>().Delete(pi); });
 
-        product = _mapper.Map<Product>(productDto);
+        var product = _mapper.Map<Product>(productDto);
         await CopyFileToServerAsync(productDto.Images, product);
-
+        
         _unitOfWork.Repository<Product>().Update(product);
         var result = await _unitOfWork.Complete();
 
