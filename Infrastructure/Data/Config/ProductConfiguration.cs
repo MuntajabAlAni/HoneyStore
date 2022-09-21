@@ -13,7 +13,7 @@ public class ProductConfiguration: IEntityTypeConfiguration<Product>
         builder.Property(p => p.Description).IsRequired();
         builder.Property(p => p.Price).HasColumnType("decimal(18,2)");
         builder.Property(p => p.PictureUrl).IsRequired();
-        builder.HasOne(b => b.productCollection).WithMany().HasForeignKey(p => p.ProductCollectionId);
-        builder.HasOne(t => t.productType).WithMany().HasForeignKey(p => p.ProductTypeId);
+        builder.HasOne(b => b.ProductCollection).WithMany().HasForeignKey(p => p.ProductCollectionId);
+        builder.HasOne(t => t.ProductType).WithMany().HasForeignKey(p => p.ProductTypeId);
     }
 }

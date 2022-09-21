@@ -10,8 +10,8 @@ public class ProductWithTypesAndCollectionsSpecification: BaseSpecification<Prod
             (!productParameters.CollectionId.HasValue || x.ProductCollectionId == productParameters.CollectionId) &&
             (!productParameters.TypeId.HasValue || x.ProductTypeId == productParameters.TypeId))
     {
-        AddInclude(x => x.productType!);
-        AddInclude(x => x.productCollection!);
+        AddInclude(x => x.ProductType!);
+        AddInclude(x => x.ProductCollection!);
         AddOrderBy(p => p.Name!);
         ApplyPaging(productParameters.PageSize * (productParameters.PageIndex - 1), productParameters.PageSize);
 
@@ -32,7 +32,7 @@ public class ProductWithTypesAndCollectionsSpecification: BaseSpecification<Prod
 
     public ProductWithTypesAndCollectionsSpecification(int id) : base(p => p.Id == id)
     {
-        AddInclude(x => x.productType!);
-        AddInclude(x => x.productCollection!);
+        AddInclude(x => x.ProductType!);
+        AddInclude(x => x.ProductCollection!);
     }
 }

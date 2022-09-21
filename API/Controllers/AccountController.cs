@@ -34,7 +34,7 @@ public class AccountController: BaseApiController
         var user = await _userManager.FindUserByClaimsPrinciple(User);
         return new UserDto
         {
-            Email = user.Email,
+            Email = user!.Email,
             Token = _tokenService.CreateToken(user),
             DisplayName = user.DisplayName
         };
@@ -51,7 +51,7 @@ public class AccountController: BaseApiController
     public async Task<ActionResult<AddressDto>> GetUserAddress()
     {
         var user = await _userManager.FindUserByClaimsPrincipalWithAddressAsync(User);
-        return _mapper.Map<Address, AddressDto>(user.Address);
+        return _mapper.Map<Address, AddressDto>(user!.Address);
     }
 
     [HttpPost("login")]
@@ -74,7 +74,7 @@ public class AccountController: BaseApiController
     public async Task<ActionResult<AddressDto>> UpdateUserAddress(AddressDto address)
     {
         var user = await _userManager.FindUserByClaimsPrincipalWithAddressAsync(User);
-        user.Address = _mapper.Map<AddressDto, Address>(address);
+        user!.Address = _mapper.Map<AddressDto, Address>(address);
         var result = await _userManager.UpdateAsync(user);
         if (result.Succeeded)
             return Ok(_mapper.Map<Address, AddressDto>(user.Address));

@@ -10,8 +10,8 @@ public class MappingProfiles : Profile
     public MappingProfiles()
     {
         CreateMap<Product, ProductToReturnDto>()
-            .ForMember(dto => dto.ProductCollection, o => o.MapFrom(s => s.productCollection!.Name))
-            .ForMember(dto => dto.ProductType, o => o.MapFrom(s => s.productType!.Name))
+            .ForMember(dto => dto.ProductCollection, o => o.MapFrom(s => s.ProductCollection!.Name))
+            .ForMember(dto => dto.ProductType, o => o.MapFrom(s => s.ProductType!.Name))
             .ForMember(dto => dto.PictureUrl, o => o.MapFrom<ProductUrlResolver>());
 
         CreateMap<Address, AddressDto>().ReverseMap();
@@ -26,9 +26,10 @@ public class MappingProfiles : Profile
         CreateMap<OrderItem, OrderItemDto>()
             .ForMember(d => d.ProductId, o => o.MapFrom(s => s.ItemOrdered.ProductItemId))
             .ForMember(d => d.ProductName, o => o.MapFrom(s => s.ItemOrdered.ProductName))
-            .ForMember(d => d.PictureUrl, o => o.MapFrom(s => s.ItemOrdered.PictureUrl))
-            .ForMember(d => d.PictureUrl, o => o.MapFrom<OrderItemUrlResolver>());
+            .ForMember(d => d.PictureUrl, o => o.MapFrom(s => s.ItemOrdered.PictureUrl));
+            //.ForMember(d => d.PictureUrl, o => o.MapFrom<OrderItemUrlResolver>());
 
         CreateMap<Post, PostRequestDto>().ReverseMap();
+        CreateMap<ProductDto, Product>();
     }
 }
