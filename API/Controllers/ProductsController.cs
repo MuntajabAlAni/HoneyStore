@@ -85,21 +85,23 @@ public class ProductsController : BaseApiController
     public async Task<ActionResult<Product>> Update([FromForm] ProductDto productDto)
     {
         var product = await _unitOfWork.Repository<Product>().GetByIdAsync(productDto.Id);
-       
-        if (product != null)
-        {
-            product.Name = productDto.Name;
-            product.Description = productDto.Description;
-            product.Price = productDto.Price;
-            product.ProductTypeId = productDto.ProductTypeId;
-            product.ProductCollectionId = productDto.ProductCollectionId;
-        //    product.ProductImages =
-        //    product.PictureUrl =
-        
-            _unitOfWork.Repository<Product>().Update(product);
-        }
+        var productImagesSpec = new ProductImagesByProductId(productDto.Id!.Value);
+        var productImages = await _unitOfWork.Repository<ProductImages>().ListAsyncWithSpec(productImagesSpec);
 
+        if (product is null)
+            return NotFound(new ApiResponse(404, "Error.. Product not found !"));
+
+        productImages.ToList().ForEach(pi => { _unitOfWork.Repository<ProductImages>().Delete(pi); });
+
+        product = _mapper.Map<Product>(productDto);
+        await CopyFileToServerAsync(productDto.Images, product);
+
+        _unitOfWork.Repository<Product>().Update(product);
         var result = await _unitOfWork.Complete();
+
+        if (result > 0)
+            await DeleteFileFromServer(productImages);
+
         return Ok(result <= 0 ? null : product);
     }
 
@@ -111,7 +113,7 @@ public class ProductsController : BaseApiController
             var imageUrl = Guid.NewGuid() + Path.GetExtension(productImage.Image.FileName);
 
             if (productImage.IsMain) product.PictureUrl = imageUrl;
-            
+
             var pathToSaveImage = Path.Combine(imageFolderName, imageUrl);
 
             await using var streamImage = new FileStream((pathToSaveImage), FileMode.Create);
@@ -121,6 +123,16 @@ public class ProductsController : BaseApiController
             {
                 pictureUrl = imageUrl
             });
+        }
+    }
+
+    private async static Task DeleteFileFromServer(IEnumerable<ProductImages> productImages)
+    {
+        foreach (var pathToDeleteImage in from productImage in productImages
+                 let imageFolderName = Path.Combine("Resources", "ProductImages")
+                 select Path.Combine(imageFolderName, productImage.pictureUrl))
+        {
+            System.IO.File.Delete(pathToDeleteImage);
         }
     }
 }
