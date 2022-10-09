@@ -6,4 +6,5 @@ public class PostRequestDto
     public string Description { get; set; }= null! ;
     public IFormFile Image { get; set; }= null! ;
     public DateTime PublishDate { get; set; }
+    public int Type { get; set; }
 }

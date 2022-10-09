@@ -6,7 +6,9 @@ public class PostWithSpecification : BaseSpecification<Post>
 {
     public PostWithSpecification(PostSpecificationParameters postParameters)
         : base(post =>
-            (string.IsNullOrEmpty(postParameters.Search) || post.Title.ToLower().Contains(postParameters.Search)))
+            (string.IsNullOrEmpty(postParameters.Search) || post.Title.ToLower().Contains(postParameters.Search))
+            && post.Type == postParameters.Type
+        )
     {
         AddOrderBy(p=>p.Title);
         ApplyPaging(postParameters.PageSize*(postParameters.PageIndex-1),postParameters.PageSize);

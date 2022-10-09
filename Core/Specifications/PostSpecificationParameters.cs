@@ -10,4 +10,7 @@ public class PostSpecificationParameters
 
     private string? _search;
     public string? Search { get => _search; set => _search = value!.ToLower(); }
+    
+    private int? _type = 0;
+    public int? Type { get => _type; set => _type = value ?? _type ; }
 }
