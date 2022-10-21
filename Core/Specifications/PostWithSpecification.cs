@@ -6,15 +6,14 @@ public class PostWithSpecification : BaseSpecification<Post>
 {
     public PostWithSpecification(PostSpecificationParameters postParameters)
         : base(post =>
-            (string.IsNullOrEmpty(postParameters.Search) || post.Title.ToLower().Contains(postParameters.Search)))
+            (string.IsNullOrEmpty(postParameters.Search) || post.Title.ToLower().Contains(postParameters.Search)) &&
+            post.IsDeleted == false)
     {
-        AddOrderBy(p=>p.Title);
-        ApplyPaging(postParameters.PageSize*(postParameters.PageIndex-1),postParameters.PageSize);
-        
+        AddOrderBy(p => p.Title);
+        ApplyPaging(postParameters.PageSize * (postParameters.PageIndex - 1), postParameters.PageSize);
     }
 
-    public PostWithSpecification(int id):base(p =>p.Id==id )
+    public PostWithSpecification(int id) : base(p => p.Id == id && p.IsDeleted == false)
     {
-        
     }
 }

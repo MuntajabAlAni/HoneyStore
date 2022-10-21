@@ -9,4 +9,5 @@ public class Post :BaseEntity
     public string PictureUrl { get; set; }
     public DateTime PublishDate { get; set; }
     public int UserId { get; set; }
+    public bool IsDeleted { get; set; } = false;
 }
