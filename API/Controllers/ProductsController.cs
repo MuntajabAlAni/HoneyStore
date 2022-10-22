@@ -102,14 +102,18 @@ public class ProductsController : BaseApiController
     } 
     
     [HttpDelete]
-    public async Task<ActionResult<int>> Delete([FromForm] ProductDto productDto)
+    public async Task<ActionResult<int>> Delete(int id)
     {
-        var productImagesSpec = new ProductImagesByProductId(productDto.Id!.Value);
+        var productImagesSpec = new ProductImagesByProductId(id);
         var productImages = await _unitOfWork.Repository<ProductImages>().ListAsyncWithSpec(productImagesSpec);
 
         productImages.ToList().ForEach(pi => { _unitOfWork.Repository<ProductImages>().Delete(pi); });
 
-        var product = _mapper.Map<Product>(productDto);
+        var spec = new ProductWithTypesAndCollectionsSpecification(id);
+        var product = await _unitOfWork.Repository<Product>().GetEntityWithSpec(spec);
+
+        if (product is null) return NotFound(new ApiResponse(404));
+
         product.IsDeleted = true;        
         _unitOfWork.Repository<Product>().Update(product);
         
