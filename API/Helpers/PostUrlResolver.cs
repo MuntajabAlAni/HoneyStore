@@ -16,7 +16,7 @@ public class PostUrlResolver : IValueResolver<Post, Post, string?>
     {
         if (!string.IsNullOrEmpty(source.PictureUrl))
         {
-            return _config["ApiUrl"] + source.PictureUrl;
+            return _config["PostsApiUrl"] + source.PictureUrl;
         }
 
         return null;
