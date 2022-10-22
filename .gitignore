@@ -11,3 +11,10 @@ Infrastructure/bin/
 Infrastructure/Data/Migrations/
 Infrastructure/Identity/Migrations/
 Infrastructure/obj/
+API/HoneyStore.db-shm
+API/API.csproj.user
+API/HoneyStore.db-wal
+API/.config/dotnet-tools.json
+API/Properties/PublishProfiles/FolderProfile.pubxml
+API/Properties/PublishProfiles/FolderProfile.pubxml.user
+Infrastructure/Data/obj/Migrations.EntityFrameworkCore.targets

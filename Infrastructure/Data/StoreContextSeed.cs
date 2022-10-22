@@ -34,7 +34,7 @@ public class StoreContextSeed
                 await context.SaveChangesAsync();
             }
 
-            if (!context.Products!.Any())
+           /* if (!context.Products!.Any())
             {
                 var productsData = File.ReadAllText(path + @"/Data/SeedData/products.json");
                 var products = JsonSerializer.Deserialize<List<Product>>(productsData);
@@ -42,7 +42,7 @@ public class StoreContextSeed
                 products!.ForEach(item => { context.Products!.Add(item); });
 
                 await context.SaveChangesAsync();
-            }
+            }*/
 
             if (!context.DeliveryMethods!.Any())
             {

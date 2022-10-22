@@ -90,6 +90,8 @@ public class PostsController : BaseApiController
     private static async Task<string> CopyFileToServerAsync(IFormFile image)
     {
         var imageFolderName = Path.Combine("Resources", "PostImages");
+        if (!Directory.Exists(imageFolderName))
+            Directory.CreateDirectory(imageFolderName);
         var imageUrl = Guid.NewGuid() + Path.GetExtension(image.FileName);
         var pathToSaveImage = Path.Combine(imageFolderName, imageUrl);
 
@@ -98,7 +100,7 @@ public class PostsController : BaseApiController
         return imageUrl;
     }
 
-    private async static Task DeleteFileFromServer(string pictureUrl)
+    private  static void DeleteFileFromServer(string pictureUrl)
     {
         var imageFolderName = Path.Combine("Resources", "ProductImages");
         var pathToDeleteImage = Path.Combine(imageFolderName, pictureUrl);

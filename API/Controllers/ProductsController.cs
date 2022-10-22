@@ -96,7 +96,7 @@ public class ProductsController : BaseApiController
         var result = await _unitOfWork.Complete();
 
         if (result > 0)
-            await DeleteFileFromServer(productImages);
+             DeleteFileFromServer(productImages);
 
         return Ok(result <= 0 ? null : product);
     } 
@@ -126,6 +126,8 @@ public class ProductsController : BaseApiController
         foreach (var productImage in productImagesDto)
         {
             var imageFolderName = Path.Combine("Resources", "ProductImages");
+            if (!Directory.Exists(imageFolderName))
+                Directory.CreateDirectory(imageFolderName);
             var imageUrl = Guid.NewGuid() + Path.GetExtension(productImage.Image.FileName);
 
             if (productImage.IsMain) product.PictureUrl = imageUrl;
@@ -142,7 +144,7 @@ public class ProductsController : BaseApiController
         }
     }
 
-    private async static Task DeleteFileFromServer(IEnumerable<ProductImages> productImages)
+    private static void DeleteFileFromServer(IEnumerable<ProductImages> productImages)
     {
         foreach (var pathToDeleteImage in from productImage in productImages
                  let imageFolderName = Path.Combine("Resources", "ProductImages")
