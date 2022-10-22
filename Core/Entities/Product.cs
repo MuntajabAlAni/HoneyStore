@@ -11,4 +11,5 @@ public class Product: BaseEntity
     public ProductCollection ProductCollection { get; set; }
     public int ProductCollectionId { get; set; }
     public List<ProductImages> ProductImages { get; set; } = new List<ProductImages>();
+    public bool IsDeleted { get; set; } = false;
 }

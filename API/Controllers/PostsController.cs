@@ -32,7 +32,7 @@ public class PostsController : BaseApiController
         return Ok(new Pagination<Post>(postParameters.PageIndex, postParameters.PageSize, totalItems, posts));
     }
 
-    [HttpGet("{id:int}")]
+    [HttpGet("")]
     public async Task<ActionResult<Post>> GetPost(int id)
     {
         var spec = new PostWithSpecification(id);
@@ -54,19 +54,37 @@ public class PostsController : BaseApiController
 
         return Ok(result <= 0 ? null : post);
     }
-    
+
     [HttpPut]
     public async Task<ActionResult<Post>> Update([FromForm] PostRequestDto requestDto)
     {
         var post = _mapper.Map<Post>(requestDto);
         post.PictureUrl = await CopyFileToServerAsync(requestDto.Image);
-        
-         DeleteFileFromServer(post.PictureUrl);
-        
+
+        await DeleteFileFromServer(post.PictureUrl);
+
         _unitOfWork.Repository<Post>().Update(post);
         var result = await _unitOfWork.Complete();
-        
+
         return Ok(result <= 0 ? null : post);
+    }
+
+    [HttpDelete]
+    public async Task<ActionResult<int>> Delete(int id)
+    {
+        var spec = new PostWithSpecification(id);
+        var post = await _unitOfWork.Repository<Post>().GetEntityWithSpec(spec);
+
+        if (post is null)
+            return NotFound(new ApiResponse(404));
+
+        await DeleteFileFromServer(post.PictureUrl);
+
+        post.IsDeleted = true;
+        _unitOfWork.Repository<Post>().Update(post);
+        var result = await _unitOfWork.Complete();
+
+        return Ok(result <= 0 ? result : post.Id);
     }
 
     private static async Task<string> CopyFileToServerAsync(IFormFile image)
