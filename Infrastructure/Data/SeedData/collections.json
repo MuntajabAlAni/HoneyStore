@@ -2,31 +2,31 @@
   {
     "Id": 1,
     "Name": "الكل",
-    "PictureUrl": "images/collections/c1.png"
+    "PictureUrl": "resources/images/collections/c1.jpg"
   },
   {
     "Id": 2,
-    "Name": "طقم الالماس",
-    "PictureUrl": "images/collections/c2.png"
+    "Name": "مجموعة 1",
+    "PictureUrl": "resources/images/collections/c2.jpg"
   },
   {
     "Id": 3,
-    "Name": "طقم الفضة",
-    "PictureUrl": "images/collections/c3.png"
+    "Name": "مجموعة 2",
+    "PictureUrl": "resources/images/collections/c3.jpg"
   },
   {
     "Id": 4,
-    "Name": "طقم الذهب",
-    "PictureUrl": "images/collections/c4.png"
+    "Name": "مجموعة 3",
+    "PictureUrl": "resources/images/collections/c4.jpg"
   },
   {
     "Id": 5,
-    "Name": "طقم مشكل",
-    "PictureUrl": "images/collections/c5.png"
+    "Name": "مجموعة 4",
+    "PictureUrl": "resources/images/collections/c5.jpg"
   },
   {
     "Id": 6,
-    "Name": "طقم برازيلي",
-    "PictureUrl": "images/collections/c6.png"
+    "Name": "مجموعة 5",
+    "PictureUrl": "resources/images/collections/c6.jpg"
   }
 ]
