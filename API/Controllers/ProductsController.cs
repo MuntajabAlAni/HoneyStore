@@ -116,7 +116,7 @@ public class ProductsController : BaseApiController
         var result = await _unitOfWork.Complete();
 
         if (result > 0)
-            await DeleteFileFromServer(productImages);
+             DeleteFileFromServer(productImages);
 
         return Ok(result <= 0 ? result : product.Id);
     }

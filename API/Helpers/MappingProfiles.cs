@@ -31,5 +31,7 @@ public class MappingProfiles : Profile
 
         CreateMap<Post, PostRequestDto>().ReverseMap();
         CreateMap<ProductDto, Product>();
+        CreateMap<Post, PostToReturnDto>()
+            .ForMember(dto => dto.PictureUrl, o => o.MapFrom<PostUrlResolver>());
     }
 }

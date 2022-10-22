@@ -22,25 +22,26 @@ public class PostsController : BaseApiController
     }
 
     [HttpGet]
-    public async Task<ActionResult<Pagination<Post>>> GetPosts([FromQuery] PostSpecificationParameters postParameters)
+    public async Task<ActionResult<Pagination<PostToReturnDto>>> GetPosts([FromQuery] PostSpecificationParameters postParameters)
     {
         var spec = new PostWithSpecification(postParameters);
         var countSpec = new PostWithFiltersForCountSpecification(postParameters);
 
         var totalItems = await _unitOfWork.Repository<Post>().CountAsync(countSpec);
         var posts = await _unitOfWork.Repository<Post>().ListAsyncWithSpec(spec);
-        return Ok(new Pagination<Post>(postParameters.PageIndex, postParameters.PageSize, totalItems, posts));
+        var data = _mapper.Map<IReadOnlyList<Post>, IReadOnlyList<PostToReturnDto>>(posts);
+        return Ok(new Pagination<PostToReturnDto>(postParameters.PageIndex, postParameters.PageSize, totalItems, data));
     }
 
-    [HttpGet("")]
-    public async Task<ActionResult<Post>> GetPost(int id)
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<PostToReturnDto>> GetPost(int id)
     {
         var spec = new PostWithSpecification(id);
         var post = await _unitOfWork.Repository<Post>().GetEntityWithSpec(spec);
 
         if (post is null)
             return NotFound(new ApiResponse(404));
-        return post;
+        return _mapper.Map<Post, PostToReturnDto>(post);
     }
 
     [HttpPost]
@@ -61,7 +62,7 @@ public class PostsController : BaseApiController
         var post = _mapper.Map<Post>(requestDto);
         post.PictureUrl = await CopyFileToServerAsync(requestDto.Image);
 
-        await DeleteFileFromServer(post.PictureUrl);
+         DeleteFileFromServer(post.PictureUrl);
 
         _unitOfWork.Repository<Post>().Update(post);
         var result = await _unitOfWork.Complete();
@@ -78,7 +79,7 @@ public class PostsController : BaseApiController
         if (post is null)
             return NotFound(new ApiResponse(404));
 
-        await DeleteFileFromServer(post.PictureUrl);
+         DeleteFileFromServer(post.PictureUrl);
 
         post.IsDeleted = true;
         _unitOfWork.Repository<Post>().Update(post);

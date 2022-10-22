@@ -1,9 +1,10 @@
-﻿using AutoMapper;
+﻿using API.DTOs;
+using AutoMapper;
 using Core.Entities;
 
 namespace API.Helpers;
 
-public class PostUrlResolver : IValueResolver<Post, Post, string?>
+public class PostUrlResolver : IValueResolver<Post, PostToReturnDto, string?>
 {
     private readonly IConfiguration _config;
 
@@ -12,7 +13,7 @@ public class PostUrlResolver : IValueResolver<Post, Post, string?>
         _config = config;
     }
 
-    public string? Resolve(Post source, Post destination, string? destMember, ResolutionContext context)
+    public string? Resolve(Post source, PostToReturnDto destination, string? destMember, ResolutionContext context)
     {
         if (!string.IsNullOrEmpty(source.PictureUrl))
         {
