@@ -99,6 +99,26 @@ public class ProductsController : BaseApiController
             await DeleteFileFromServer(productImages);
 
         return Ok(result <= 0 ? null : product);
+    } 
+    
+    [HttpDelete]
+    public async Task<ActionResult<int>> Delete([FromForm] ProductDto productDto)
+    {
+        var productImagesSpec = new ProductImagesByProductId(productDto.Id!.Value);
+        var productImages = await _unitOfWork.Repository<ProductImages>().ListAsyncWithSpec(productImagesSpec);
+
+        productImages.ToList().ForEach(pi => { _unitOfWork.Repository<ProductImages>().Delete(pi); });
+
+        var product = _mapper.Map<Product>(productDto);
+        product.IsDeleted = true;        
+        _unitOfWork.Repository<Product>().Update(product);
+        
+        var result = await _unitOfWork.Complete();
+
+        if (result > 0)
+            await DeleteFileFromServer(productImages);
+
+        return Ok(result <= 0 ? result : product.Id);
     }
 
     private static async Task CopyFileToServerAsync(List<ProductImagesDto> productImagesDto, Product product)
