@@ -103,7 +103,7 @@ public class PostsController : BaseApiController
 
     private  static void DeleteFileFromServer(string pictureUrl)
     {
-        var imageFolderName = Path.Combine("Resources", "ProductImages");
+        var imageFolderName = Path.Combine("Resources", "PostImages");
         var pathToDeleteImage = Path.Combine(imageFolderName, pictureUrl);
 
         System.IO.File.Delete(pathToDeleteImage);

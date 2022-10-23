@@ -7,17 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Remove="Resources\PostImages\**" />
-      <Compile Remove="Resources\ProductImages\**" />
-      <Content Remove="Resources\PostImages\**" />
-      <Content Remove="Resources\ProductImages\**" />
-      <EmbeddedResource Remove="Resources\PostImages\**" />
-      <EmbeddedResource Remove="Resources\ProductImages\**" />
-      <None Remove="Resources\PostImages\**" />
-      <None Remove="Resources\ProductImages\**" />
-    </ItemGroup>
-
-    <ItemGroup>
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.8" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.8">
@@ -30,12 +19,29 @@
 
     <ItemGroup>
       <Folder Include="obj\Debug\net6.0" />
+      <Folder Include="Resources\PostImages" />
+      <Folder Include="Resources\ProductImages" />
       <Folder Include="wwwroot" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Core\Core.csproj" />
       <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Resources\ProductImages\e74e9b55-913f-42a5-85ba-3a788651671b.jpg" />
+      <None Remove="Resources\ProductImages\e3ea2801-2d3c-4c06-b007-9965cd11121a.jpg" />
+      <None Remove="Resources\ProductImages\d8018925-4139-4a1e-83fb-d25a927c4384.jpg" />
+      <None Remove="Resources\ProductImages\c31037ee-c5cb-4807-8f9a-f0f64a8ac377.jpg" />
+      <None Remove="Resources\ProductImages\94d63beb-b2af-4c7f-9998-608de1af6334.jpg" />
+      <None Remove="Resources\ProductImages\9335bf9c-cd0d-4993-be87-3d6f9cb33bf6.jpg" />
+      <None Remove="Resources\ProductImages\5c999be2-32cf-4bc9-9448-50008c1c0c9c.jpg" />
+      <None Remove="Resources\ProductImages\53393e56-2db5-4f12-8b65-ae3e262122a0.jpg" />
+      <None Remove="Resources\ProductImages\41fffd87-7b56-46d6-b94a-9172334e9550.jpg" />
+      <None Remove="Resources\ProductImages\39a86215-b5bb-4664-9ed4-a5a571dca50c.jpg" />
+      <None Remove="Resources\ProductImages\361dc9dd-9aba-4f38-a306-6c16bbffbfd2.jpg" />
+      <None Remove="Resources\ProductImages\1b39d0ba-04cd-4074-b563-213520c9944e.jpg" />
     </ItemGroup>
 
 </Project>
