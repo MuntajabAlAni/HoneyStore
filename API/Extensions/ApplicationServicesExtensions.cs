@@ -20,11 +20,13 @@ public static class ApplicationServicesExtensions
         services.AddAutoMapper(typeof(MappingProfiles));
         services.AddDbContext<StoreContext>(x =>
         {
-            x.UseSqlite(configuration.GetConnectionString("SQLiteDefaultConnection"));
+            x.UseMySql(configuration.GetConnectionString("SQLiteDefaultConnection"),
+                ServerVersion.AutoDetect(configuration.GetConnectionString("SQLiteDefaultConnection")));
         });
         services.AddDbContext<AppIdentityDbContext>(x =>
         {
-            x.UseSqlite(configuration.GetConnectionString("SQLiteIdentityConnection"));
+            x.UseMySql(configuration.GetConnectionString("SQLiteIdentityConnection"),
+                ServerVersion.AutoDetect(configuration.GetConnectionString("SQLiteIdentityConnection")));
         });
 
         /*services.AddSingleton<IConnectionMultiplexer>(c =>
