@@ -60,9 +60,9 @@ public class PostsController : BaseApiController
     public async Task<ActionResult<Post>> Update([FromForm] PostRequestDto requestDto)
     {
         var post = _mapper.Map<Post>(requestDto);
+        DeleteFileFromServer(post.PictureUrl);
+        
         post.PictureUrl = await CopyFileToServerAsync(requestDto.Image);
-
-         DeleteFileFromServer(post.PictureUrl);
 
         _unitOfWork.Repository<Post>().Update(post);
         var result = await _unitOfWork.Complete();
@@ -79,7 +79,7 @@ public class PostsController : BaseApiController
         if (post is null)
             return NotFound(new ApiResponse(404));
 
-         DeleteFileFromServer(post.PictureUrl);
+        DeleteFileFromServer(post.PictureUrl);
 
         post.IsDeleted = true;
         _unitOfWork.Repository<Post>().Update(post);
