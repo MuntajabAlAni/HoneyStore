@@ -43,6 +43,19 @@
       <None Remove="Resources\ProductImages\39a86215-b5bb-4664-9ed4-a5a571dca50c.jpg" />
       <None Remove="Resources\ProductImages\361dc9dd-9aba-4f38-a306-6c16bbffbfd2.jpg" />
       <None Remove="Resources\ProductImages\1b39d0ba-04cd-4074-b563-213520c9944e.jpg" />
+      <None Remove="obj\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="obj\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="obj\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="obj\**" />
     </ItemGroup>
 
 </Project>

@@ -18,9 +18,11 @@ public class AppIdentityDbContextSeed
                 Address = new Address
                 {
                     FirstName = "admin",
+                    SecondName = "admin",
                     LastName = "admin",
-                    FullAddress = "baghdad",
-                    Remarks = ""
+                    Country = "Iraq",
+                    Province = "Baghdad",
+                    PhoneNumber = "07733810890"
                 }
             };
 

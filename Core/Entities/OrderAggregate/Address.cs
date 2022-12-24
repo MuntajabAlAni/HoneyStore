@@ -2,21 +2,25 @@
 
 public class Address
 {
-     
     public Address()
     {
     }
 
-    public Address(string firstName, string lastName, string fullAddress, string remarks)
+    public Address(string firstName, string secondName, string lastName, string country, string province,
+        string phoneNumber)
     {
         FirstName = firstName;
         LastName = lastName;
-        FullAddress = fullAddress;
-        Remarks = remarks;
+        Country = country;
+        Province = province;
+        PhoneNumber = phoneNumber;
+        SecondName = secondName;
     }
 
-    public string FirstName { get; set; } = null!;
-    public string LastName { get; set; } = null!;
-    public string FullAddress { get; set; } = null!;
-    public string Remarks { get; set; } = null!;
+    public string FirstName { get; set; }
+    public string SecondName { get; set; }
+    public string LastName { get; set; }
+    public string Country { get; set; }
+    public string Province { get; set; }
+    public string PhoneNumber { get; set; }
 }
