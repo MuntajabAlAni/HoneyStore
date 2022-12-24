@@ -26,7 +26,7 @@ public class OrderService: IOrderService
         // calc subtotal
         var subtotal = items.Sum(item => item.Price * item.Quantity);
         // create order
-        var order = new Order(items, buyerEmail, shippingAddress, deliveryMethod, subtotal);
+        var order = new Order(items, buyerEmail, shippingAddress, deliveryMethod!, subtotal);
         _unitOfWork.Repository<Order>().Add(order);
         //save to db
         var result = await _unitOfWork.Complete();

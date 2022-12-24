@@ -143,7 +143,7 @@ public class ProductsController : BaseApiController
 
             product.ProductImages.Add(new ProductImages
             {
-                pictureUrl = imageUrl
+                PictureUrl = imageUrl
             });
         }
     }
@@ -152,7 +152,7 @@ public class ProductsController : BaseApiController
     {
         foreach (var pathToDeleteImage in from productImage in productImages
                  let imageFolderName = Path.Combine("Resources", "ProductImages")
-                 select Path.Combine(imageFolderName, productImage.pictureUrl))
+                 select Path.Combine(imageFolderName, productImage.PictureUrl))
         {
             System.IO.File.Delete(pathToDeleteImage);
         }

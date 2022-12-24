@@ -12,7 +12,7 @@ public class StoreContext : DbContext
         {
         }
 
-        public DbSet<Post> Posts { get; set; }
+        public DbSet<Post>? Posts { get; set; }
         public DbSet<Product>? Products { get; set; }
         public DbSet<ProductCollection>? ProductCollections { get; set; }
         public DbSet<ProductType>? ProductTypes { get; set; }

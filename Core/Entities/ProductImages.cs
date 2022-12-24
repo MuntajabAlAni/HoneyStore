@@ -2,6 +2,6 @@
 
 public class ProductImages : BaseEntity
 {
-    public string pictureUrl { get; set; }
-    public int productId { get; set; }
+    public string PictureUrl { get; set; }  = null!;
+    public int ProductId { get; set; }
 }

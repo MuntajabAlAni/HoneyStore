@@ -2,15 +2,15 @@
 
 public class Product: BaseEntity
 {
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public string Link { get; set; }
+    public string Name { get; set; }  = null!;
+    public string Description { get; set; }  = null!;
+    public string Link { get; set; }  = null!;
     public decimal Price { get; set; }
-    public string PictureUrl { get; set; }
-    public ProductType ProductType {get; set;}
+    public string PictureUrl { get; set; }  = null!;
+    public ProductType ProductType {get; set;}  = null!;
     public int ProductTypeId { get; set; }
-    public ProductCollection ProductCollection { get; set; }
+    public ProductCollection ProductCollection { get; set; }  = null!;
     public int ProductCollectionId { get; set; }
-    public List<ProductImages> ProductImages { get; set; } = new List<ProductImages>();
+    public List<ProductImages> ProductImages { get; set; }  = null!;
     public bool IsDeleted { get; set; } = false;
 }

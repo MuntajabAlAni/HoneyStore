@@ -17,10 +17,10 @@ public class Address
         SecondName = secondName;
     }
 
-    public string FirstName { get; set; }
-    public string SecondName { get; set; }
-    public string LastName { get; set; }
-    public string Country { get; set; }
-    public string Province { get; set; }
-    public string PhoneNumber { get; set; }
+    public string FirstName { get; set; }  = null!;
+    public string SecondName { get; set; }  = null!;
+    public string LastName { get; set; }  = null!;
+    public string Country { get; set; }  = null!;
+    public string Province { get; set; }  = null!;
+    public string PhoneNumber { get; set; }  = null!;
 }

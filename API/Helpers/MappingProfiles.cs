@@ -32,6 +32,8 @@ public class MappingProfiles : Profile
         CreateMap<Post, PostRequestDto>().ReverseMap();
         CreateMap<ProductDto, Product>();
         CreateMap<Post, PostToReturnDto>()
+#pragma warning disable CS8631
             .ForMember(dto => dto.PictureUrl, o => o.MapFrom<PostUrlResolver>());
+#pragma warning restore CS8631
     }
 }

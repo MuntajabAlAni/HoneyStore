@@ -4,7 +4,7 @@ namespace Core.Specifications;
 
 public class ProductImagesByProductId : BaseSpecification<ProductImages>
 {
-    public ProductImagesByProductId(int productId) : base(i => i.productId == productId)
+    public ProductImagesByProductId(int productId) : base(i => i.ProductId == productId)
     {
     }
 }
