@@ -22,7 +22,8 @@ public class PostsController : BaseApiController
     }
 
     [HttpGet]
-    public async Task<ActionResult<Pagination<PostToReturnDto>>> GetPosts([FromQuery] PostSpecificationParameters postParameters)
+    public async Task<ActionResult<Pagination<PostToReturnDto>>> GetPosts(
+        [FromQuery] PostSpecificationParameters postParameters)
     {
         var spec = new PostWithSpecification(postParameters);
         var countSpec = new PostWithFiltersForCountSpecification(postParameters);
@@ -51,9 +52,22 @@ public class PostsController : BaseApiController
         post.PictureUrl = await CopyFileToServerAsync(requestDto.Image);
 
         _unitOfWork.Repository<Post>().Add(post);
-        var result = await _unitOfWork.Complete();
+        await _unitOfWork.Complete();
 
-        return Ok(result <= 0 ? null : post);
+        if (requestDto.ReceiptField > 0)
+        {
+            _unitOfWork.Repository<PostReceiptFields>().Add(new PostReceiptFields
+            {
+                PostId = post.Id,
+                ReceiptFieldId = requestDto.ReceiptField
+            });
+        }
+
+        var result = await _unitOfWork.Complete();
+        var postToReturnDto = _mapper.Map<Post, PostToReturnDto>(post);
+        postToReturnDto.ReceiptField = requestDto.ReceiptField;
+
+        return Ok(result <= 0 ? null : postToReturnDto);
     }
 
     [HttpPut]
@@ -61,7 +75,7 @@ public class PostsController : BaseApiController
     {
         var post = _mapper.Map<Post>(requestDto);
         DeleteFileFromServer(post.PictureUrl);
-        
+
         post.PictureUrl = await CopyFileToServerAsync(requestDto.Image);
 
         _unitOfWork.Repository<Post>().Update(post);
@@ -101,7 +115,7 @@ public class PostsController : BaseApiController
         return imageUrl;
     }
 
-    private  static void DeleteFileFromServer(string pictureUrl)
+    private static void DeleteFileFromServer(string pictureUrl)
     {
         var imageFolderName = Path.Combine("Resources", "PostImages");
         var pathToDeleteImage = Path.Combine(imageFolderName, pictureUrl);

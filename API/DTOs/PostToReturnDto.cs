@@ -11,5 +11,6 @@ namespace API.DTOs
         public int Type { get; set; }
         public int UserId { get; set; }
         public bool IsDeleted { get; set; } = false;
+        public int ReceiptField { get; set; }
     }
 }

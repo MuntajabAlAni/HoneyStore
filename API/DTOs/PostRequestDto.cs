@@ -8,4 +8,5 @@ public class PostRequestDto
     public IFormFile Image { get; set; }= null! ;
     public DateTime PublishDate { get; set; }
     public int Type { get; set; }
+    public int ReceiptField { get; set; }
 }

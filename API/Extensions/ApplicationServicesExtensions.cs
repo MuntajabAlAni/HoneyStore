@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using API.Errors;
+﻿using API.Errors;
 using API.Helpers;
 using Core.Interfaces;
 using Infrastructure.Data;
@@ -7,9 +6,6 @@ using Infrastructure.Identity;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using StackExchange.Redis;
 
 namespace API.Extensions;
 
@@ -20,13 +16,13 @@ public static class ApplicationServicesExtensions
         services.AddAutoMapper(typeof(MappingProfiles));
         services.AddDbContext<StoreContext>(x =>
         {
-            x.UseMySql(configuration.GetConnectionString("SQLiteDefaultConnection"),
-                ServerVersion.AutoDetect(configuration.GetConnectionString("SQLiteDefaultConnection")));
+            x.UseMySql(configuration.GetConnectionString("MySQLDefaultConnection"),
+                ServerVersion.AutoDetect(configuration.GetConnectionString("MySQLDefaultConnection")));
         });
         services.AddDbContext<AppIdentityDbContext>(x =>
         {
-            x.UseMySql(configuration.GetConnectionString("SQLiteIdentityConnection"),
-                ServerVersion.AutoDetect(configuration.GetConnectionString("SQLiteIdentityConnection")));
+            x.UseMySql(configuration.GetConnectionString("MySQLIdentityConnection"),
+                ServerVersion.AutoDetect(configuration.GetConnectionString("MySQLIdentityConnection")));
         });
 
         /*services.AddSingleton<IConnectionMultiplexer>(c =>

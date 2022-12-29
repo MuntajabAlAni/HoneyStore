@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using Core.Entities;
 
 namespace API.Helpers;
 
-public class Pagination<T> where T : class
+public class Pagination<T> where T : BaseEntity
 {
     public Pagination(int pageIndex, int pageSize, int count, IEnumerable<T> data)
     {
