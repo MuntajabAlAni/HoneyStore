@@ -20,18 +20,11 @@ public class StoreContext : DbContext
         public DbSet<Order>? Orders { get; set; }
         public DbSet<OrderItem>? OrderItems { get; set; }
         public DbSet<DeliveryMethod>? DeliveryMethods { get; set; }
-        public DbSet<PostReceiptFields>? PostReceiptFields { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-            /*
-            modelBuilder.Entity<PostReceiptFields>(builder =>
-                {
-                    builder.HasNoKey();
-                });
-                */
             
             switch (Database.ProviderName)
             {

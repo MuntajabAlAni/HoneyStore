@@ -52,22 +52,10 @@ public class PostsController : BaseApiController
         post.PictureUrl = await CopyFileToServerAsync(requestDto.Image);
 
         _unitOfWork.Repository<Post>().Add(post);
-        await _unitOfWork.Complete();
-
-        if (requestDto.ReceiptField > 0)
-        {
-            _unitOfWork.Repository<PostReceiptFields>().Add(new PostReceiptFields
-            {
-                PostId = post.Id,
-                ReceiptFieldId = requestDto.ReceiptField
-            });
-        }
 
         var result = await _unitOfWork.Complete();
-        var postToReturnDto = _mapper.Map<Post, PostToReturnDto>(post);
-        postToReturnDto.ReceiptField = requestDto.ReceiptField;
 
-        return Ok(result <= 0 ? null : postToReturnDto);
+        return Ok(result <= 0 ? null : post);
     }
 
     [HttpPut]
