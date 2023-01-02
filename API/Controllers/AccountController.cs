@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using API.DTOs;
+﻿using API.DTOs;
 using API.Errors;
 using API.Extensions;
 using AutoMapper;
@@ -11,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
 
-public class AccountController: BaseApiController
+public class AccountController : BaseApiController
 {
     private readonly UserManager<AppUser> _userManager;
     private readonly SignInManager<AppUser> _signInManager;
@@ -36,7 +35,9 @@ public class AccountController: BaseApiController
         {
             Email = user!.Email,
             Token = _tokenService.CreateToken(user),
-            DisplayName = user.DisplayName
+            FirstName = user.FirstName,
+            SecondName = user.SecondName,
+            LastName = user.LastName
         };
     }
 
@@ -65,7 +66,9 @@ public class AccountController: BaseApiController
         {
             Email = user.Email,
             Token = _tokenService.CreateToken(user),
-            DisplayName = user.DisplayName
+            FirstName = user.FirstName,
+            SecondName = user.SecondName,
+            LastName = user.LastName
         };
     }
 
@@ -78,7 +81,19 @@ public class AccountController: BaseApiController
         var result = await _userManager.UpdateAsync(user);
         if (result.Succeeded)
             return Ok(_mapper.Map<Address, AddressDto>(user.Address));
-        
+
+        return BadRequest("Problem updating the user");
+    }
+
+    [Authorize]
+    [HttpPut("password")]
+    public async Task<ActionResult<AddressDto>> UpdateUserPassword(ChangePasswordDto dto)
+    {
+        var user = await _userManager.FindUserByClaimsPrincipalWithAddressAsync(User);
+        var result = await _userManager.ChangePasswordAsync(user!, dto.CurrentPassword, dto.NewPassword);
+        if (result.Succeeded)
+            return Ok("Password updated!");
+
         return BadRequest("Problem updating the user");
     }
 
@@ -86,13 +101,14 @@ public class AccountController: BaseApiController
     public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
     {
         if (CheckEmailExistsAsync(registerDto.Email).Result.Value)
-        {
             return new BadRequestObjectResult(new ApiValidationErrorResponse
                 { Errors = new[] { "Email Address is in use !!" } });
-        }
+
         var user = new AppUser
         {
-            DisplayName = registerDto.DisplayName,
+            FirstName = registerDto.FirstName,
+            SecondName = registerDto.SecondName,
+            LastName = registerDto.LastName,
             Email = registerDto.Email,
             UserName = registerDto.Email
         };
@@ -100,9 +116,12 @@ public class AccountController: BaseApiController
         var result = await _userManager.CreateAsync(user, registerDto.Password);
 
         if (!result.Succeeded) return BadRequest(new ApiResponse(400));
+
         return new UserDto
         {
-            DisplayName = user.DisplayName,
+            FirstName = user.FirstName,
+            SecondName = user.SecondName,
+            LastName = user.LastName,
             Token = _tokenService.CreateToken(user),
             Email = user.Email
         };

@@ -12,14 +12,13 @@ public class AppIdentityDbContextSeed
         {
             var user = new AppUser
             {
-                DisplayName = "admin",
+                FirstName = "admin",
+                SecondName = "admin",
+                LastName = "admin",
                 Email = "admin@admin.com",
                 UserName = "admin",
                 Address = new Address
                 {
-                    FirstName = "admin",
-                    SecondName = "admin",
-                    LastName = "admin",
                     Country = "Iraq",
                     Province = "Baghdad",
                     PhoneNumber = "07733810890"
