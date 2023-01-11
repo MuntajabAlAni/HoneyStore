@@ -3,7 +3,7 @@ using Core.Entities;
 
 namespace API.Helpers;
 
-public class Pagination<T> where T : BaseEntity
+public class Pagination<T>
 {
     public Pagination(int pageIndex, int pageSize, int count, IEnumerable<T> data)
     {
@@ -12,7 +12,7 @@ public class Pagination<T> where T : BaseEntity
         Count = count;
         Data = data;
     }
-
+    public int Id { get; set; }
     public int PageIndex { get; set; }
     public int PageSize { get; set; }
     public int Count { get; set; }

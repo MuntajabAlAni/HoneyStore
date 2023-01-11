@@ -19,7 +19,7 @@ public class UnitOfWork: IUnitOfWork
         _context.Dispose();
     }
 
-    public IGenericRepository<TEntity> Repository<TEntity>() where TEntity : BaseEntity
+    public IGenericRepository<TEntity> Repository<TEntity>()
     {
         _repositories ??= new Hashtable();
         var type = typeof(TEntity).Name;

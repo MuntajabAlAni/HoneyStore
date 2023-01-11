@@ -6,8 +6,8 @@ public enum OrderStatus
 {
     [EnumMember(Value = "Pending")]
     Pending,
-    [EnumMember(Value = "Received")]
-    Received,
-    [EnumMember(Value = "Cancelled")]
-    Cancelled
+    [EnumMember(Value = "Payment Received")]
+    PaymentReceived,
+    [EnumMember(Value = "Payment Failed")]
+    PaymentFailed
 }

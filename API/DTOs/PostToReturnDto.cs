@@ -2,8 +2,9 @@
 
 namespace API.DTOs
 {
-    public class PostToReturnDto: BaseEntity
+    public class PostToReturnDto
     {
+        public int Id { get; set; }
         public string Title { get; set; }  = null!;
         public string Description { get; set; }  = null!;
         public string PictureUrl { get; set; }  = null!;
