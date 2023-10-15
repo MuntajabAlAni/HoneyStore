@@ -5,31 +5,34 @@ using Core.Specifications;
 
 namespace Infrastructure.Services;
 
-public class OrderService: IOrderService
+public class OrderService : IOrderService
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public OrderService( IUnitOfWork unitOfWork)
+    public OrderService(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Order?> CreateOrderAsync(string buyerEmail, int deliveryMethodId, Address shippingAddress)
+    public async Task<Order?> CreateOrderAsync(string buyerEmail, CustomerBasket basket, Address shippingAddress)
     {
-        // get basket from repo 
-        // get items from product repo
         var items = new List<OrderItem>();
-       
-        // get dm from repo
-        var deliveryMethod = await _unitOfWork.Repository<DeliveryMethod>().GetByIdAsync(deliveryMethodId);
-        // calc subtotal
+
+        foreach (var item in basket!.Items)
+        {
+            var productItem = await _unitOfWork.Repository<Product>().GetByIdAsync(item.Id);
+            if (productItem == null) continue;
+            
+            var itemOrdered = new ProductItemOrdered(productItem.Id, productItem.Name, productItem.PictureUrl);
+            var orderItem = new OrderItem(itemOrdered, productItem.Price, item.Quantity);
+            items.Add(orderItem);
+        }
+
+        var deliveryMethod = await _unitOfWork.Repository<DeliveryMethod>().GetByIdAsync(basket.DeliveryMethodId);
         var subtotal = items.Sum(item => item.Price * item.Quantity);
-        // create order
         var order = new Order(items, buyerEmail, shippingAddress, deliveryMethod!, subtotal);
         _unitOfWork.Repository<Order>().Add(order);
-        //save to db
         var result = await _unitOfWork.Complete();
-        // return order
         return result <= 0 ? null : order;
     }
 

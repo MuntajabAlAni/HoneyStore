@@ -21,12 +21,11 @@ namespace API.Controllers
         }
 
         [Authorize]
-        [HttpPost("{basketId}")]
-        public async Task<ActionResult<CustomerBasket>> CreateOrUpdatePamentIntent(string basketId)
+        [HttpPost()]
+        public async Task<ActionResult<CustomerBasket>> CreateOrUpdatePaymentIntent(CustomerBasket basket)
         {
-            var basket = await _paymentService.CreateOrUpdatePaymentIntent(basketId);
-
-            return basket == null ? BadRequest(new ApiResponse(400, "Problem with your basket")) : basket;
+            var updatedBasket = await _paymentService.CreateOrUpdatePaymentIntent(basket);
+            return updatedBasket == null ? BadRequest(new ApiResponse(400, "Problem with your basket")) : updatedBasket;
         }
 
         [HttpPost("webhook")]
@@ -41,16 +40,16 @@ namespace API.Controllers
             {
                 case "payment_intent.succeeded":
                     intent = (PaymentIntent)stripeEvent.Data.Object;
-                    _logger.LogInformation("Payment Succeeded: ", intent.Id);
+                    _logger.LogInformation("Payment Succeeded: {IntentId}", intent.Id);
                     order = await _paymentService.UpdateOrderPaymentSucceeded(intent.Id);
-                    _logger.LogInformation("Order updated to payment received: ", order.Id);
+                    _logger.LogInformation("Order updated to payment received: {OrderId}", order!.Id);
                     break;
 
                 case "payment_intent.payment_failed":
                     intent = (PaymentIntent)stripeEvent.Data.Object;
-                    _logger.LogInformation("Payment Failed: ", intent.Id);
+                    _logger.LogInformation("Payment Failed: {IntentId}", intent.Id);
                     order = await _paymentService.UpdateOrderPaymentFailed(intent.Id);
-                    _logger.LogInformation("Order updated to payment failed: ", order.Id);
+                    _logger.LogInformation("Order updated to payment failed: {OrderId}", order!.Id);
                     break;
             }
 

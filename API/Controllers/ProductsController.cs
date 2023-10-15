@@ -73,7 +73,11 @@ public class ProductsController : BaseApiController
     public async Task<ActionResult<Product>> Create([FromForm] ProductDto productDto)
     {
         var product = _mapper.Map<Product>(productDto);
-        await CopyFileToServerAsync(productDto.Images, product);
+        
+        if (productDto.Images.Count > 0)
+            await CopyFileToServerAsync(productDto.Images, product);
+        else
+            product.PictureUrl = string.Empty;
 
         _unitOfWork.Repository<Product>().Add(product);
         var result = await _unitOfWork.Complete();
@@ -91,16 +95,16 @@ public class ProductsController : BaseApiController
 
         var product = _mapper.Map<Product>(productDto);
         await CopyFileToServerAsync(productDto.Images, product);
-        
+
         _unitOfWork.Repository<Product>().Update(product);
         var result = await _unitOfWork.Complete();
 
         if (result > 0)
-             DeleteFileFromServer(productImages);
+            DeleteFileFromServer(productImages);
 
         return Ok(result <= 0 ? null : product);
-    } 
-    
+    }
+
     [HttpDelete]
     public async Task<ActionResult<int>> Delete(int id)
     {
@@ -114,13 +118,13 @@ public class ProductsController : BaseApiController
 
         if (product is null) return NotFound(new ApiResponse(404));
 
-        product.IsDeleted = true;        
+        product.IsDeleted = true;
         _unitOfWork.Repository<Product>().Update(product);
-        
+
         var result = await _unitOfWork.Complete();
 
         if (result > 0)
-             DeleteFileFromServer(productImages);
+            DeleteFileFromServer(productImages);
 
         return Ok(result <= 0 ? result : product.Id);
     }

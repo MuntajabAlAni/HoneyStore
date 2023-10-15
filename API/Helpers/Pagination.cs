@@ -12,7 +12,6 @@ public class Pagination<T>
         Count = count;
         Data = data;
     }
-    public int Id { get; set; }
     public int PageIndex { get; set; }
     public int PageSize { get; set; }
     public int Count { get; set; }

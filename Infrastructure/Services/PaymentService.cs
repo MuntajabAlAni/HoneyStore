@@ -11,22 +11,17 @@ namespace Infrastructure.Services
 {
     public class PaymentService : IPaymentService
     {
-        private readonly IBasketRepository _basketRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IConfiguration _configuration;
-        public PaymentService(IBasketRepository basketRepository, IUnitOfWork unitOfWork, IConfiguration configuration)
+        public PaymentService(IUnitOfWork unitOfWork, IConfiguration configuration)
         {
             _configuration = configuration;
             _unitOfWork = unitOfWork;
-            _basketRepository = basketRepository;
         }
 
-        public async Task<CustomerBasket?> CreateOrUpdatePaymentIntent(string basketId)
+        public async Task<CustomerBasket?> CreateOrUpdatePaymentIntent(CustomerBasket basket)
         {
             StripeConfiguration.ApiKey = _configuration["StripeSettings:SecretKey"];
-            var basket = await _basketRepository.GetBasketAsync(basketId);
-
-            if (basket == null) return null;
 
             var shippingPrice = 0m;
 
@@ -68,7 +63,6 @@ namespace Infrastructure.Services
                 await service.UpdateAsync(basket.PaymentIntentId, options);
             }
 
-            await _basketRepository.UpdateBasketAsync(basket);
             return basket;
         }
 

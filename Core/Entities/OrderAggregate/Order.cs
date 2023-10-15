@@ -1,4 +1,6 @@
-﻿namespace Core.Entities.OrderAggregate;
+﻿using System.Globalization;
+
+namespace Core.Entities.OrderAggregate;
 
 public class Order
 {
@@ -18,7 +20,7 @@ public class Order
     
     public int Id { get; set; }
     public string BuyerEmail { get; set; } = null!;
-    public string OrderDate { get; set; } = DateTime.Now.ToString();
+    public string OrderDate { get; set; } = DateTime.Now.ToString(CultureInfo.InvariantCulture);
     public Address ShipToAddress { get; set; } = null!;
     public DeliveryMethod DeliveryMethod { get; set; } = null!;
     public IReadOnlyList<OrderItem> OrderItems { get; set; } = null!;

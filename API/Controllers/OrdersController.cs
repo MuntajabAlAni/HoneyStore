@@ -25,7 +25,7 @@ public class OrdersController: BaseApiController
     {
         var email = HttpContext.User.RetrieveEmailFromPrincipal();
         var address = _mapper.Map<AddressDto, Address>(orderDto.ShipToAddress);
-        var order = await _orderService.CreateOrderAsync(email, orderDto.DeliveryMethodId, address);
+        var order = await _orderService.CreateOrderAsync(email, orderDto.Basket, address);
 
         if (order is null) return BadRequest(new ApiResponse(400, "Problem creating order..."));
         return Ok(order);
@@ -36,7 +36,7 @@ public class OrdersController: BaseApiController
     {
         var email = HttpContext.User.RetrieveEmailFromPrincipal();
         var orders = await _orderService.GetOrdersForUserAsync(email);
-
+        
         return Ok(_mapper.Map<IReadOnlyList<Order>,IReadOnlyList<OrderToReturnDto>>(orders));
     }
 
